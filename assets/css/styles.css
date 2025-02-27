@@ -511,7 +511,7 @@ footer {
     padding: 60px 0;
     font-size: 14px;
     color: white;
-    background: rgba(0, 0, 0, 0.7);
+    background: #000;
     backdrop-filter: blur(5px);
     font-family: Arial, sans-serif;
     box-shadow: 1px 4px 15px 25px rgb(0 0 0);;
@@ -542,4 +542,13 @@ footer a:hover {
 
 footer a:hover::after {
     transform: scaleX(1);
+}
+@media (max-width: 768px) {
+    .typing {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
+        font-size: 1.1rem;
+    }
 }

@@ -1,3 +1,8 @@
+document.addEventListener("DOMContentLoaded", function () {
+    document.documentElement.style.overflowX = "hidden";
+});
+
+
 window.addEventListener("load", function () {
     const preloader = document.getElementById("preloader");
     const content = document.getElementById("content");
@@ -20,7 +25,11 @@ window.addEventListener("load", function () {
 });
 
 document.addEventListener("DOMContentLoaded", function () {
-    const texts = ["analista e desenvolvedor de sistemas", "professor de história e filosofia", "aficionado por tecnologia"];
+    const texts = [
+        'analista e desenvolvedor de sistemas', 
+        'professor de história e filosofia', 
+        'aficionado por tecnologia'
+    ];
     let index = 0;
     let charIndex = 0;
     const typingElement = document.getElementById("typing");
