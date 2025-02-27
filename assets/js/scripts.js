@@ -102,7 +102,10 @@ function createComets() {
         let comet = document.createElement("div");
         comet.classList.add("comet");
 
-        let startX = Math.random() * 100;
+        let maxWidth = window.innerWidth <= 768 ? 50 : 100; // 50vw para mobile, 100vw para desktop
+        let startX = Math.random() * maxWidth;
+        
+
         let startY = Math.random() * 100;
 
         comet.style.left = `${startX}vw`;
@@ -131,7 +134,7 @@ function createUfo() {
         let startY = Math.random() * 60 + 20; 
 
         ufo.style.top = `${startY}vh`;
-        ufo.style.left = "-60px";
+        ufo.style.left = "-5vw";
         ufoContainer.appendChild(ufo);
 
         function shootLaser() {
@@ -139,7 +142,8 @@ function createUfo() {
             shot.classList.add("shot");
 
             let ufoRect = ufo.getBoundingClientRect();
-            shot.style.left = `${ufoRect.left + ufoRect.width / 2}px`;
+            let shotX = Math.min(window.innerWidth - 5, Math.max(5, ufoRect.left + ufoRect.width / 2));
+shot.style.left = `${shotX}px`;
             shot.style.top = `${ufoRect.bottom}px`;
 
             document.body.appendChild(shot);

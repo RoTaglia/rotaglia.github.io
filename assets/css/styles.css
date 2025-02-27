@@ -551,4 +551,21 @@ footer a:hover::after {
         max-width: 100%;
         font-size: 1.1rem;
     }
+    .comet {
+        max-width: 100vw;
+        left: clamp(0vw, 100vw, 100vw);
+    }
+    
+    .ufo {
+        max-width: 100vw;
+        left: clamp(0vw, 100vw, 100vw);
+    }
+    @keyframes moveUfo {
+        0% {
+            left: -5vw; /* Antes era -60px */
+        }
+        100% {
+            left: 100vw; /* Antes era 110vw */
+        }
+    }
 }
