@@ -1,3 +1,3 @@
 Este é meu site pessoal
 
-Link: https://rotaglia.github.io/RoTaglia/
+Link: https://rotaglia.github.io
