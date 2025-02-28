@@ -220,6 +220,8 @@ const ctx = canvas.getContext("2d");
 
 let score1 = 0, score2 = 0;
 let gameWidth, gameHeight, paddleWidth, paddleHeight, ballRadius;
+let player2Up = false, player2Down = false;
+let player2Manual = false; // Player 2 joga sozinho até pressionar "W" ou "S"
 
 function resizeGameArea() {
     const container = document.querySelector(".content-container");
@@ -232,23 +234,34 @@ function updateSizes() {
     gameWidth = canvas.width;
     gameHeight = canvas.height;
 
-    paddleWidth = gameWidth * 0.008;
-    paddleHeight = gameHeight * 0.25;
-    ballRadius = gameWidth * 0.007;
+    if (gameWidth < 768) {
+        // Em telas menores, aumentar a bola, os pads e melhorar o Player 1
+        paddleWidth = gameWidth * 0.012; // Pads mais largos
+        paddleHeight = gameHeight * 0.22; // Pads mais altos
+        ballRadius = gameWidth * 0.015; // Bola maior
+        paddleLeft.speed = 0.12; // Player 1 mais rápido (inteligente)
+    } else {
+        // Em telas maiores, manter os tamanhos normais
+        paddleWidth = gameWidth * 0.008;
+        paddleHeight = gameHeight * 0.17;
+        ballRadius = gameWidth * 0.006;
+        paddleLeft.speed = 0.08; // Player 1 mais lento (menos inteligente)
+    }
 
     paddleLeft.width = paddleWidth;
     paddleLeft.height = paddleHeight;
-    paddleLeft.x = gameWidth * 0.02;
+    paddleLeft.x = gameWidth * 0.01;
     paddleLeft.y = (gameHeight - paddleHeight) / 2;
 
     paddleRight.width = paddleWidth;
     paddleRight.height = paddleHeight;
-    paddleRight.x = gameWidth - gameWidth * 0.02 - paddleWidth;
+    paddleRight.x = gameWidth - gameWidth * 0.01 - paddleWidth;
     paddleRight.y = (gameHeight - paddleHeight) / 2;
 
     ball.radius = ballRadius;
     resetBall();
 }
+
 
 function resetBall(winner) {
     if (winner === "left") {
@@ -261,17 +274,17 @@ function resetBall(winner) {
 
     ball.x = gameWidth / 2;
     ball.y = gameHeight / 2;
-    ball.speedX = (Math.random() > 0.5 ? 1 : -1) * (gameWidth * 0.005);
-    ball.speedY = (Math.random() > 0.5 ? 1 : -1) * (gameHeight * 0.005);
+    ball.speedX = (Math.random() > 0.5 ? 1 : -1) * (gameWidth * 0.007);
+    ball.speedY = (Math.random() > 0.5 ? 1 : -1) * (gameHeight * 0.007);
 }
 
 let ball = { x: 0, y: 0, speedX: 4, speedY: 4, radius: 10 };
 
-let paddleLeft = { x: 0, y: 0, width: 10, height: 60, speed: 0.15, errorMargin: 10 };
-let paddleRight = { x: 0, y: 0, width: 10, height: 60, speed: 0.08, delay: 10, targetY: 0, errorMargin: 25 };
+let paddleLeft = { x: 0, y: 0, width: 10, height: 60, speed: 0.15 };
+let paddleRight = { x: 0, y: 0, width: 10, height: 60, speed: 6 };
 
 function drawDashedLine() {
-    ctx.strokeStyle = "white";
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.1)"; // Branco com 50% de opacidade
     ctx.setLineDash([10, 10]);
     ctx.beginPath();
     ctx.moveTo(gameWidth / 2, 0);
@@ -295,6 +308,7 @@ function update() {
     ball.x += ball.speedX;
     ball.y += ball.speedY;
 
+    // Se a bola sair para os lados (ponto marcado)
     if (ball.x < 0) {
         resetBall("right");
         return;
@@ -303,37 +317,57 @@ function update() {
         resetBall("left");
         return;
     }
+
+    // Se a bola tocar na parte superior ou inferior, inverter a direção
     if (ball.y - ball.radius < 0 || ball.y + ball.radius > gameHeight) {
         ball.speedY *= -1;
     }
 
-    function checkPaddleCollision(paddle) {
-        let missChance = Math.random() * paddle.errorMargin;
-        return (
-            ball.y > paddle.y - missChance &&
-            ball.y < paddle.y + paddle.height + missChance
-        );
+    // Corrigir colisão com o paddle esquerdo (Player 1)
+    if (ball.x - ball.radius < paddleLeft.x + paddleLeft.width && 
+        ball.y > paddleLeft.y && ball.y < paddleLeft.y + paddleLeft.height) {
+        
+        ball.speedX *= -1; // Inverter direção
+
+        // Evita que a bola fique presa dentro do paddle
+        ball.x = paddleLeft.x + paddleLeft.width + ball.radius;
     }
 
-    if (ball.x - ball.radius < paddleLeft.x + paddleLeft.width) {
-        if (checkPaddleCollision(paddleLeft)) {
-            ball.speedX *= -1;
-        } else {
-            resetBall("right");
-        }
+    // Corrigir colisão com o paddle direito (Player 2)
+    if (ball.x + ball.radius > paddleRight.x &&
+        ball.y > paddleRight.y && ball.y < paddleRight.y + paddleRight.height) {
+        
+        ball.speedX *= -1; // Inverter direção
+
+        // Evita que a bola fique presa dentro do paddle
+        ball.x = paddleRight.x - ball.radius;
     }
 
-    if (ball.x + ball.radius > paddleRight.x) {
-        if (checkPaddleCollision(paddleRight)) {
-            ball.speedX *= -1;
-        } else {
-            resetBall("left");
-        }
-    }
-
+    // Movimentação automática do Player 1
     paddleLeft.y += (ball.y - paddleLeft.y - paddleLeft.height / 2) * paddleLeft.speed;
-    paddleRight.y += (ball.y - paddleRight.y - paddleRight.height / 2) * paddleRight.speed;
+
+
+    // Movimentação do Player 2 (manual ou automática)
+    if (player2Manual) {
+        if (player2Up && paddleRight.y > 0) paddleRight.y -= paddleRight.speed;
+        if (player2Down && paddleRight.y + paddleRight.height < gameHeight) paddleRight.y += paddleRight.speed;
+    } else {
+        paddleRight.y += (ball.y - paddleRight.y - paddleRight.height / 2) * 0.08;
+    }
 }
+
+
+document.addEventListener("keydown", (event) => {
+    if (event.key === "w") player2Up = player2Manual = true;
+    if (event.key === "s") player2Down = player2Manual = true;
+});
+
+document.addEventListener("keyup", (event) => {
+    if (event.key === "w") player2Up = false;
+    if (event.key === "s") player2Down = false;
+});
+
+
 
 function gameLoop() {
     update();
