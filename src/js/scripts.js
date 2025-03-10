@@ -214,3 +214,167 @@ document.addEventListener("DOMContentLoaded", function () {
     createStars("stars-final");
     createComets("comets-final");
 });
+
+const canvas = document.getElementById("pongCanvas");
+const ctx = canvas.getContext("2d");
+
+let score1 = 0, score2 = 0;
+let gameWidth, gameHeight, paddleWidth, paddleHeight, ballRadius;
+let player2Up = false, player2Down = false;
+let player2Manual = false; // Player 2 joga sozinho até pressionar "W" ou "S"
+
+function resizeGameArea() {
+    const container = document.querySelector(".content-container");
+    canvas.width = container.clientWidth;
+    canvas.height = container.clientHeight;
+    updateSizes();
+}
+
+function updateSizes() {
+    gameWidth = canvas.width;
+    gameHeight = canvas.height;
+
+    if (gameWidth < 768) {
+        // Em telas menores, aumentar a bola, os pads e melhorar o Player 1
+        paddleWidth = gameWidth * 0.012; // Pads mais largos
+        paddleHeight = gameHeight * 0.22; // Pads mais altos
+        ballRadius = gameWidth * 0.015; // Bola maior
+        paddleLeft.speed = 0.12; // Player 1 mais rápido (inteligente)
+    } else {
+        // Em telas maiores, manter os tamanhos normais
+        paddleWidth = gameWidth * 0.008;
+        paddleHeight = gameHeight * 0.17;
+        ballRadius = gameWidth * 0.006;
+        paddleLeft.speed = 0.08; // Player 1 mais lento (menos inteligente)
+    }
+
+    paddleLeft.width = paddleWidth;
+    paddleLeft.height = paddleHeight;
+    paddleLeft.x = gameWidth * 0.01;
+    paddleLeft.y = (gameHeight - paddleHeight) / 2;
+
+    paddleRight.width = paddleWidth;
+    paddleRight.height = paddleHeight;
+    paddleRight.x = gameWidth - gameWidth * 0.01 - paddleWidth;
+    paddleRight.y = (gameHeight - paddleHeight) / 2;
+
+    ball.radius = ballRadius;
+    resetBall();
+}
+
+
+function resetBall(winner) {
+    if (winner === "left") {
+        score1++;
+    } else if (winner === "right") {
+        score2++;
+    }
+    document.getElementById("score1").innerText = score1;
+    document.getElementById("score2").innerText = score2;
+
+    ball.x = gameWidth / 2;
+    ball.y = gameHeight / 2;
+    ball.speedX = (Math.random() > 0.5 ? 1 : -1) * (gameWidth * 0.007);
+    ball.speedY = (Math.random() > 0.5 ? 1 : -1) * (gameHeight * 0.007);
+}
+
+let ball = { x: 0, y: 0, speedX: 4, speedY: 4, radius: 10 };
+
+let paddleLeft = { x: 0, y: 0, width: 10, height: 60, speed: 0.15 };
+let paddleRight = { x: 0, y: 0, width: 10, height: 60, speed: 6 };
+
+function drawDashedLine() {
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.1)"; // Branco com 50% de opacidade
+    ctx.setLineDash([10, 10]);
+    ctx.beginPath();
+    ctx.moveTo(gameWidth / 2, 0);
+    ctx.lineTo(gameWidth / 2, gameHeight);
+    ctx.stroke();
+    ctx.setLineDash([]);
+}
+
+function drawElements() {
+    ctx.clearRect(0, 0, gameWidth, gameHeight);
+    drawDashedLine();
+    ctx.fillStyle = "white";
+    ctx.fillRect(paddleLeft.x, paddleLeft.y, paddleLeft.width, paddleLeft.height);
+    ctx.fillRect(paddleRight.x, paddleRight.y, paddleRight.width, paddleRight.height);
+    ctx.beginPath();
+    ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+    ctx.fill();
+}
+
+function update() {
+    ball.x += ball.speedX;
+    ball.y += ball.speedY;
+
+    // Se a bola sair para os lados (ponto marcado)
+    if (ball.x < 0) {
+        resetBall("right");
+        return;
+    }
+    if (ball.x > gameWidth) {
+        resetBall("left");
+        return;
+    }
+
+    // Se a bola tocar na parte superior ou inferior, inverter a direção
+    if (ball.y - ball.radius < 0 || ball.y + ball.radius > gameHeight) {
+        ball.speedY *= -1;
+    }
+
+    // Corrigir colisão com o paddle esquerdo (Player 1)
+    if (ball.x - ball.radius < paddleLeft.x + paddleLeft.width && 
+        ball.y > paddleLeft.y && ball.y < paddleLeft.y + paddleLeft.height) {
+        
+        ball.speedX *= -1; // Inverter direção
+
+        // Evita que a bola fique presa dentro do paddle
+        ball.x = paddleLeft.x + paddleLeft.width + ball.radius;
+    }
+
+    // Corrigir colisão com o paddle direito (Player 2)
+    if (ball.x + ball.radius > paddleRight.x &&
+        ball.y > paddleRight.y && ball.y < paddleRight.y + paddleRight.height) {
+        
+        ball.speedX *= -1; // Inverter direção
+
+        // Evita que a bola fique presa dentro do paddle
+        ball.x = paddleRight.x - ball.radius;
+    }
+
+    // Movimentação automática do Player 1
+    paddleLeft.y += (ball.y - paddleLeft.y - paddleLeft.height / 2) * paddleLeft.speed;
+
+
+    // Movimentação do Player 2 (manual ou automática)
+    if (player2Manual) {
+        if (player2Up && paddleRight.y > 0) paddleRight.y -= paddleRight.speed;
+        if (player2Down && paddleRight.y + paddleRight.height < gameHeight) paddleRight.y += paddleRight.speed;
+    } else {
+        paddleRight.y += (ball.y - paddleRight.y - paddleRight.height / 2) * 0.08;
+    }
+}
+
+
+document.addEventListener("keydown", (event) => {
+    if (event.key === "w") player2Up = player2Manual = true;
+    if (event.key === "s") player2Down = player2Manual = true;
+});
+
+document.addEventListener("keyup", (event) => {
+    if (event.key === "w") player2Up = false;
+    if (event.key === "s") player2Down = false;
+});
+
+
+
+function gameLoop() {
+    update();
+    drawElements();
+    requestAnimationFrame(gameLoop);
+}
+
+window.addEventListener("resize", resizeGameArea);
+resizeGameArea();
+gameLoop();

@@ -11,6 +11,9 @@ body {
 p{
     font-family: 'Raleway', sans-serif;
 }
+.borderBotton{
+    border-bottom: 2px solid white;
+}
 #preloader {
     position: fixed;
     width: 100%;
@@ -326,6 +329,10 @@ p{
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
     position: relative;
     z-index: 1;
+    transition: transform 0.3s ease;
+}
+.timeline-item .content:hover {
+    transform: scale(1.07);
 }
 .timeline-item.left {
     justify-content: flex-start;
@@ -419,10 +426,66 @@ p{
 .portfolio-item a:hover::after {
     transform: scaleX(1);
 }
+/* Div principal com conteúdo e Pong no fundo */
+.content-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 500px;
+    border: 2px solid white;
+    overflow: hidden;
+}
+
+/* Div do Pong */
+.pong-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
+canvas {
+    width: 100%;
+    height: 100%;
+}
+
+/* Placar visível e reposicionado */
+.scoreboard {
+    position: absolute;
+    top: 10px;
+    left: 25px;
+    color: white;
+    padding: 5px 15px;
+    z-index: 2;
+    font-size: 1.5em;
+}
+
+.pong-play {
+    position: absolute;
+    top: 10px;
+    right: 25px;
+    color: white;
+    padding: 5px 15px;
+    z-index: 2;
+    font-size: 1.5em;
+}
+
+/* Conteúdo sobreposto ao jogo */
+.pong-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    color: white;
+    text-align: center;
+}
 #contact {
     position: relative;
     background: linear-gradient(180deg, #0a192f, #112240); /* Azul escuro */
-    padding: 100px 20px;
+    padding: 20px;
     text-align: center;
     color: white;
 }
@@ -567,5 +630,13 @@ footer a:hover::after {
         100% {
             left: 100vw; /* Antes era 110vw */
         }
+    }
+    .scoreboard {
+        left: 0;
+        font-size: 1em;
+    }
+    
+    .pong-play {
+        display: none;
     }
 }
