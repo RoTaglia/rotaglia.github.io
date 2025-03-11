@@ -143,7 +143,7 @@ function createUfo() {
 
             let ufoRect = ufo.getBoundingClientRect();
             let shotX = Math.min(window.innerWidth - 5, Math.max(5, ufoRect.left + ufoRect.width / 2));
-shot.style.left = `${shotX}px`;
+            shot.style.left = `${shotX}px`;
             shot.style.top = `${ufoRect.bottom}px`;
 
             document.body.appendChild(shot);
@@ -214,6 +214,38 @@ document.addEventListener("DOMContentLoaded", function () {
     createStars("stars-final");
     createComets("comets-final");
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+    const astroTop = document.querySelector(".astro.top");
+    const astroBottom = document.querySelector(".astro.bottom");
+
+    function observeAstronaut(element) {
+        let observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        element.classList.add("show");
+
+                        // Aguarda a entrada para iniciar a flutuação
+                        setTimeout(() => {
+                            element.classList.add("floating");
+                        }, 1000); // Tempo igual ao da animação de entrada (1s)
+                    } else {
+                        element.classList.remove("show", "floating");
+                    }
+                });
+            },
+            { threshold: 0.2 } // Ativa quando 20% do elemento estiver visível
+        );
+
+        observer.observe(element);
+    }
+
+    observeAstronaut(astroTop);
+    observeAstronaut(astroBottom);
+});
+
+
 
 const canvas = document.getElementById("pongCanvas");
 const ctx = canvas.getContext("2d");
@@ -355,7 +387,6 @@ function update() {
         paddleRight.y += (ball.y - paddleRight.y - paddleRight.height / 2) * 0.08;
     }
 }
-
 
 document.addEventListener("keydown", (event) => {
     if (event.key === "w") player2Up = player2Manual = true;

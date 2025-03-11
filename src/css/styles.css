@@ -157,6 +157,93 @@ p{
     background-size: contain;
     animation: moveUfo 10s linear forwards, oscillate 2.5s ease-in-out infinite;
 }
+@keyframes slideInTop {
+    from {
+        transform: translateX(100px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes floating {
+    0% {
+        transform: translateX(0) translateY(0px);
+    }
+    50% {
+        transform: translateX(0) translateY(-20px);
+    }
+    100% {
+        transform: translateX(0) translateY(0px);
+    }
+}
+
+@keyframes slideInBottom {
+    from {
+        transform: translateX(-100px) scaleX(-1);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0) scaleX(-1);
+        opacity: 1;
+    }
+}
+
+@keyframes floatingInBottom {
+    0% {
+        transform: translateX(0) translateY(0px) scaleX(-1);
+    }
+    50% {
+        transform: translateX(0) translateY(-20px) scaleX(-1);
+    }
+    100% {
+        transform: translateX(0) translateY(0px) scaleX(-1);
+    }
+}
+
+.astro-container {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+/* Estilo base dos astronautas */
+.astro {
+    width: 250px;
+    height: 250px;
+    background: url(../img/astro.png) no-repeat center;
+    background-size: contain;
+    pointer-events: none;
+    opacity: 0;
+    position: absolute;
+}
+
+/* Astronauta superior (entra da direita para a esquerda e depois flutua) */
+.astro.top {
+    top: 5%;
+    right: 0;
+    transform: translateX(100px); /* Começa deslocado para a direita */
+}
+
+.astro.top.show {
+    animation: slideInTop 1s ease-out forwards, floating 3s infinite ease-in-out 2s;
+}
+
+/* Astronauta inferior (entra da esquerda para a direita e espelhado) */
+.astro.bottom {
+    bottom: 5%;
+    left: 0;
+    transform: translateX(-100px) scaleX(-1); /* Começa deslocado para a esquerda e espelhado */
+}
+
+.astro.bottom.show {
+    animation: slideInBottom 1s ease-out forwards, floatingInBottom 3s infinite ease-in-out 2s;
+}
 .shot {
     position: absolute;
     width: 1px;
@@ -316,7 +403,7 @@ p{
     transform: translateY(30px);
     transition: opacity 1s ease-out, transform 1s ease-out;
 }
-.timeline-item.visible {
+.timeline-item.visible{
     opacity: 1;
     transform: translateY(0);
 }
@@ -520,6 +607,25 @@ canvas {
     width: 100%;
     height: 100%;
 }
+.iss-container {
+    position: absolute;
+    width: 100vw; /* Garante que ocupa a largura total da tela */
+    height: 100vh; /* Ocupa a altura total da tela */
+    overflow: hidden; /* Impede que a ISS gere rolagem */
+    top: 0;
+    left: 0;
+}
+.iss {
+    width: 150px;
+    height: 150px;
+    background: url(../img/iss.png) no-repeat center;
+    background-size: contain;
+    position: absolute;
+    top: 10%;
+    right: 10%;
+    animation: floating 3s infinite ease-in-out;
+}
+
 .solar_systm {
     position: relative;
     width: 100%;
@@ -552,6 +658,7 @@ canvas {
         transform: translateX(-50%);
     }
 }
+
 .solar_bottom {
     position: absolute;
     z-index: 6;
@@ -629,6 +736,44 @@ footer a:hover::after {
         }
         100% {
             left: 100vw; /* Antes era 110vw */
+        }
+    }
+    #resume{
+        padding: 50px 3%;
+    }
+    .timeline-item .content {
+        width: 38%;
+    }
+    .astro{
+        width: 150px;
+        height: 150px;
+    }
+    .astro.top{
+        transform: translateX(20px);
+        top: 9%;
+    }
+    @keyframes slideInTop {
+        from {
+            transform: translateX(20px);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+    .astro.bottom{
+        transform: translateX(-20px) scaleX(-1);
+        bottom: 3%;
+    }
+    @keyframes slideInBottom {
+        from {
+            transform: translateX(-20px) scaleX(-1);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0) scaleX(-1);
+            opacity: 1;
         }
     }
     .scoreboard {
