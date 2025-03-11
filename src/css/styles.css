@@ -430,7 +430,6 @@ p{
 }
 #portfolio {
     position: relative;
-    background: linear-gradient(180deg, #08111e, #0a192f);
     background: radial-gradient(circle at bottom left, rgba(150, 100, 200, 0.2), transparent),
                 radial-gradient(circle at top right, rgba(4, 54, 161, 0.1), transparent),
                 linear-gradient(180deg, #08111e, #0a192f); 
