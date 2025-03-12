@@ -512,6 +512,43 @@ p{
 .portfolio-item a:hover::after {
     transform: scaleX(1);
 }
+/* Estiliza o fundo do modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    justify-content: center;
+    align-items: center;
+}
+
+/* Estiliza a imagem dentro do modal */
+.modal-content {
+    max-width: 80%;
+    max-height: 80%;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.2);
+}
+
+/* Botão de fechar */
+.close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    font-size: 40px;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: red;
+}
+
 /* Div principal com conteúdo e Pong no fundo */
 .content-container {
     position: relative;
@@ -712,6 +749,42 @@ footer a:hover {
 footer a:hover::after {
     transform: scaleX(1);
 }
+@keyframes drifting {
+    0% {
+        transform: translateX(0) translateY(0px);
+    }
+    50% {
+        transform: translateX(-10px) translateY(0px);
+    }
+    100% {
+        transform: translateX(0) translateY(0px);
+    }
+}
+.scroll-top-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    cursor: pointer;
+    display: none;
+    z-index: 1000;
+    border: 0;
+    background: none;
+    animation: drifting 3s infinite ease-in-out;
+    transition: opacity 0.3s, transform 0.3s;
+}
+.scroll-top-btn img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: opacity 0.3s, transform 0.3s;
+    filter: drop-shadow(0px 8px 5px #505CC2);
+}
+.scroll-top-btn img:hover {
+    transform: scale(1.2);
+}
+
 @media (max-width: 768px) {
     .typing {
         white-space: nowrap;
@@ -763,7 +836,7 @@ footer a:hover::after {
     }
     .astro.bottom{
         transform: translateX(-20px) scaleX(-1);
-        bottom: 3%;
+        bottom: 13%;
     }
     @keyframes slideInBottom {
         from {

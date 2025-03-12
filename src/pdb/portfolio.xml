@@ -1,0 +1,50 @@
+<portfolio>
+    <project>
+        <position>1</position>
+        <image>src/img/spirulina.jpg</image>
+        <name>Fresh Spirulina</name>
+        <link>https://www.freshspirulina.com/</link>
+        <description>Desenvolvimento freelancer em HTML, CSS e JavaScript.</description>
+        <details>Este projeto foi feito para uma empresa que vende Spirulina fresca.</details>
+    </project>
+    <project>
+        <position>2</position>
+        <image>src/img/cicv.jpg</image>
+        <name>CICV - Legado</name>
+        <link>https://legado.cicv.org.br/</link>
+        <description>Desenvolvimento freelancer em HTML, CSS e JavaScript.</description>
+        <details>Site institucional para fazer simulação de doação através de testamento para o Comitê Internacional da Cruz Vermelha (CICV).</details>
+    </project>
+    <project>
+        <position>3</position>
+        <image>src/img/jmhs.jpg</image>
+        <name>JM Hospitality Solutions</name>
+        <link>https://www.jmhs-llc.com/</link>
+        <description>Desenvolvimento freelancer em Wordpress.</description>
+        <details>Site para uma empresa de consultoria em hospitalidade, oferecendo soluções para hotéis e resorts.</details>
+    </project>
+    <project>
+        <position>4</position>
+        <image>src/img/aec.jpg</image>
+        <name>AEC</name>
+        <link>https://aecarriers.com/</link>
+        <description>Desenvolvimento freelancer em Wordpress.</description>
+        <details>Criação e manutenção de site corporativo para transportadora internacional.</details>
+    </project>
+    <project>
+        <position>5</position>
+        <image>src/img/frontmax.jpg</image>
+        <name>Coleira Frontmax</name>
+        <link></link>
+        <description>Desenvolvimento freelancer de landing page em HTML, CSS e JavaScript.</description>
+        <details>Landing page para campanha de um produto veterinário. Campanha já finalizada.</details>
+    </project>
+    <project>
+        <position>6</position>
+        <image>src/img/cntools.jpg</image>
+        <name>CnTools - Contador de Vida e Campo Virtual</name>
+        <link></link>
+        <description>Desenvolvimento de app para sistema Android.</description>
+        <details>Aplicativo em fase de teste na Play Store, feito para jogadores de Magic: The Gathering, permitindo contar pontos de vida e gerenciar campos virtuais.</details>
+    </project>
+</portfolio>

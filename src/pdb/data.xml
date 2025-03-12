@@ -1,0 +1,93 @@
+<data>
+    <resume>
+        <formation>
+            <item>
+                <position>3</position>
+                <year>2005 - 2008</year>
+                <description>Licenciado em História pela UNICEP</description>
+            </item>
+            <item>
+                <position>1</position>
+                <year>2022 - 2024</year>
+                <description>Tecnólogo em Análise e Desenvolvimento de Sistemas pela Estácio</description>
+            </item>
+            <item>
+                <position>2</position>
+                <year>2024 - Atual</year>
+                <description>Licenciando em Filosofia pela UNINTER</description>
+            </item>
+            <item>
+                <position>4</position>
+                <year>2003</year>
+                <description>Manutenção e Suporte em Informática pela ETEC Sylvio de Mattos Carvalho</description>
+            </item>
+            <!--
+                <item>
+                    <position></position>
+                    <year></year>
+                    <description></description>
+                </item>
+            -->
+        </formation>
+        <experience>
+            <item>
+                <position>7</position>
+                <year>2009 - 2011</year>
+                <title>Professor de História e Filosofia</title>
+                <location>Escola Oca dos Curumins</location>
+                <city>São Carlos/SP</city>
+            </item>
+            <item>
+                <position>6</position>
+                <year>2011</year>
+                <title>Professor de Informática</title>
+                <location>Collegium Sapiens</location>
+                <city>São Carlos/SP</city>
+            </item>
+            <item>
+                <position>5</position>
+                <year>2011 - 2016</year>
+                <title>Analista de Qualidade de Vida</title>
+                <location>SENAI</location>
+                <city>Araraquara/SP</city>
+            </item>
+            <item>
+                <position>3</position>
+                <year>2018 - Atual</year>
+                <title>Professor de História, Filosofia e Geografia</title>
+                <location>Prefeitura Municipal de Matão</location>
+                <city>Matão/SP</city>
+            </item>
+            <item>
+                <position>4</position>
+                <year>2017 - Atual</year>
+                <title>Proprietário da livraria</title>
+                <location>Canto Nerd</location>
+                <city>Matão/SP</city>
+            </item>
+            <item>
+                <position>1</position>
+                <year>2020 - Atual</year>
+                <title>Freelancer com desenvolvimento em HTML, CSS, JS e PHP</title>
+                <location></location>
+                <city></city>
+            </item>
+            <item>
+                <position>2</position>
+                <year>2022</year>
+                <title>DesenvolvedorFull Stack</title>
+                <location>Agência Spelta</location>
+                <city>Matão/SP</city>
+            </item>
+            <!--
+                <item>
+                    <position></position>
+                    <year></year>
+                    <title></title>
+                    <location></location>
+                    <city></city>
+                </item>
+            -->
+        </experience>
+    </resume>
+</data>

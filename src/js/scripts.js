@@ -2,10 +2,9 @@ document.addEventListener("DOMContentLoaded", function () {
     document.documentElement.style.overflowX = "hidden";
 });
 
-
-window.addEventListener("load", function () {
+/*window.addEventListener("load", function () {
     const preloader = document.getElementById("preloader");
-    const content = document.getElementById("content");
+    const content = document.getElementById("loader-content");
 
     setTimeout(() => {
         preloader.style.transition = "opacity 0.8s ease-out";
@@ -22,13 +21,14 @@ window.addEventListener("load", function () {
             
         }, 800); // Tempo para remover o preloader após o fade-out
     }, 1500); // Tempo que o preloader fica visível antes de começar a desaparecer
-});
+});*/
 
 document.addEventListener("DOMContentLoaded", function () {
     const texts = [
         'analista e desenvolvedor de sistemas', 
-        'professor de história e filosofia', 
-        'aficionado por tecnologia'
+        'aficionado por tecnologia', 
+        'conhecimento em HTML5, CSS3,',
+        'JavaScript, PHP, MySQL...',
     ];
     let index = 0;
     let charIndex = 0;
@@ -215,6 +215,70 @@ document.addEventListener("DOMContentLoaded", function () {
     createComets("comets-final");
 });
 
+//formação
+document.addEventListener("DOMContentLoaded", function () {
+    fetch("/src/pdb/data.xml")
+        .then(response => response.text())
+        .then(xmlText => {
+            const parser = new DOMParser();
+            const xmlDoc = parser.parseFromString(xmlText, "text/xml");
+
+            // Seleciona os containers
+            const formationContainer = document.querySelector("#resume .timeline");
+            const experienceContainer = document.querySelector("#resume .timeline:nth-of-type(2)");
+
+            // Processa Formação Acadêmica e obtém o último lado usado
+            const lastSideFormation = processTimeline(xmlDoc, "formation", formationContainer, "left");
+
+            // Alterna o lado inicial da Experiência Profissional com base no último lado da Formação
+            const startSideExperience = (lastSideFormation === "left") ? "right" : "left";
+
+            // Processa Experiência Profissional
+            processTimeline(xmlDoc, "experience", experienceContainer, startSideExperience);
+        })
+        .catch(error => console.error("Erro ao carregar o XML:", error));
+});
+
+function processTimeline(xmlDoc, tag, container, startSide) {
+    const items = Array.from(xmlDoc.getElementsByTagName(tag)[0].getElementsByTagName("item"));
+
+    // Ordena os itens com base na tag <position>
+    items.sort((a, b) => {
+        return parseInt(a.getElementsByTagName("position")[0].textContent) - 
+               parseInt(b.getElementsByTagName("position")[0].textContent);
+    });
+
+    container.innerHTML = ""; // Limpa o container
+
+    let currentSide = startSide; // Define o lado inicial
+
+    items.forEach((item, index) => {
+        const year = item.getElementsByTagName("year")[0].textContent;
+        const description = item.getElementsByTagName("description")?.[0]?.textContent || "";
+        const title = item.getElementsByTagName("title")?.[0]?.textContent || "";
+        const location = item.getElementsByTagName("location")?.[0]?.textContent || "";
+        const city = item.getElementsByTagName("city")?.[0]?.textContent || "";
+
+        const contentHTML = `
+            <div class="timeline-item ${currentSide} fade-in">
+                <div class="content">
+                    <h3>${year}</h3>
+                    <p>${title ? `<strong>${title}</strong><br>` : ""}${location ? `${location}<br>` : ""}${city ? `<br>${city}` : ""}${description ? `<br>${description}` : ""}</p>
+                </div>
+            </div>`;
+
+        container.innerHTML += contentHTML;
+
+        // Alterna o lado para o próximo item
+        currentSide = (currentSide === "left") ? "right" : "left";
+    });
+
+    // Retorna o último lado usado para que a próxima seção continue corretamente
+    return currentSide === "left" ? "right" : "left";
+}
+
+
+
 document.addEventListener("DOMContentLoaded", function () {
     const astroTop = document.querySelector(".astro.top");
     const astroBottom = document.querySelector(".astro.bottom");
@@ -243,6 +307,78 @@ document.addEventListener("DOMContentLoaded", function () {
 
     observeAstronaut(astroTop);
     observeAstronaut(astroBottom);
+});
+
+//Projetos - Portfolio
+document.addEventListener("DOMContentLoaded", function () {
+    fetch("/src/pdb/portfolio.xml")
+        .then(response => response.text())
+        .then(xmlText => {
+            const parser = new DOMParser();
+            const xmlDoc = parser.parseFromString(xmlText, "text/xml");
+            const portfolioContainer = document.getElementById("portfolio-container");
+            const modal = document.getElementById("image-modal");
+            const modalImg = document.getElementById("modal-img");
+            const closeModal = document.getElementById("close-modal");
+
+            let projects = Array.from(xmlDoc.getElementsByTagName("project"));
+
+            // Ordena os projetos pela posição definida no XML
+            projects.sort((a, b) => {
+                return parseInt(a.getElementsByTagName("position")[0].textContent) - 
+                       parseInt(b.getElementsByTagName("position")[0].textContent);
+            });
+
+            portfolioContainer.innerHTML = ""; // Limpa o container antes de adicionar os projetos
+
+            projects.forEach((project) => {
+                const position = project.getElementsByTagName("position")[0].textContent;
+                const image = project.getElementsByTagName("image")[0].textContent;
+                const name = project.getElementsByTagName("name")[0].textContent;
+                const link = project.getElementsByTagName("link")[0].textContent;
+                const description = project.getElementsByTagName("description")[0].textContent;
+                const details = project.getElementsByTagName("details")[0].textContent;
+
+                // Se houver um link, cria um elemento de âncora, senão exibe apenas a descrição
+                const linkHTML = link.trim() ? `<a href="${link}" target="_blank">${link}</a>` : "<p>Sem link disponível</p>";
+
+                const projectHTML = `
+                    <div class="portfolio-item fade-in visible">
+                        <img src="${image}" alt="${name}" class="portfolio-image">
+                        <h3>${position}. ${name}</h3>
+                        ${linkHTML}
+                        <p>${description}</p>
+                        <details>
+                            <summary>Mais detalhes</summary>
+                            <p>${details}</p>
+                        </details>
+                    </div>
+                `;
+
+                portfolioContainer.innerHTML += projectHTML;
+            });
+
+            // Adiciona evento de clique em todas as imagens para abrir o modal
+            document.querySelectorAll(".portfolio-image").forEach(img => {
+                img.addEventListener("click", function () {
+                    modal.style.display = "flex";
+                    modalImg.src = this.src;
+                });
+            });
+
+            // Fecha o modal ao clicar no botão de fechar
+            closeModal.addEventListener("click", function () {
+                modal.style.display = "none";
+            });
+
+            // Fecha o modal ao clicar fora da imagem
+            modal.addEventListener("click", function (event) {
+                if (event.target === modal) {
+                    modal.style.display = "none";
+                }
+            });
+        })
+        .catch(error => console.error("Erro ao carregar o XML:", error));
 });
 
 
@@ -409,3 +545,29 @@ function gameLoop() {
 window.addEventListener("resize", resizeGameArea);
 resizeGameArea();
 gameLoop();
+
+/*document.addEventListener("DOMContentLoaded", function () {
+    const scrollToTopBtn = document.getElementById("scrollToTopBtn");
+    const secondSection = document.querySelector("section:nth-of-type(2)"); // Segunda seção
+
+    // Monitora o scroll da página
+    window.addEventListener("scroll", function () {
+        const sectionPosition = secondSection.getBoundingClientRect().top; // Posição da segunda seção
+        const viewportHeight = window.innerHeight; // Altura da tela
+
+        // Se a segunda seção estiver visível na tela, exibe o botão
+        if (sectionPosition < viewportHeight) {
+            scrollToTopBtn.style.display = "block";
+        } else {
+            scrollToTopBtn.style.display = "none";
+        }
+    });
+
+    // Voltar ao topo ao clicar no botão
+    scrollToTopBtn.addEventListener("click", function () {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth" // Efeito suave de rolagem
+        });
+    });
+});*/
