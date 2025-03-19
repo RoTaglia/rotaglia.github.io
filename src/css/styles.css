@@ -211,7 +211,6 @@ p{
     height: 100%;
     pointer-events: none;
 }
-
 /* Estilo base dos astronautas */
 .astro {
     width: 250px;
@@ -784,6 +783,31 @@ footer a:hover::after {
 .scroll-top-btn img:hover {
     transform: scale(1.2);
 }
+#word-cloud {
+    position: absolute;
+    width: 70%;
+    height: 450px;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    left: 50%;
+}
+.word {
+    position: absolute;
+    opacity: 0;
+    animation: fadeInOut 6s infinite;
+    font-size: 20px;
+    color: #e9e0e06b;
+}
+  @keyframes fadeInOut {
+    0%, 100% {
+      opacity: 0;
+      transform: scale(0.5);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
 
 @media (max-width: 768px) {
     .typing {
@@ -855,5 +879,10 @@ footer a:hover::after {
     
     .pong-play {
         display: none;
+    }
+    #word-cloud {
+        width: 80%;
+        height: 250px;
+        top: 40%;
     }
 }

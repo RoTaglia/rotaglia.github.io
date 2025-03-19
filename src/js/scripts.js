@@ -571,3 +571,60 @@ gameLoop();
         });
     });
 });*/
+
+const words = [
+    "HTML", "CSS", "JavaScript", "WordPress", "Desenvolvimento", "Laravel",
+    "Responsivo", "Frontend", "React", "PHP", "Python", "Git", "Figma", "Web"
+  ];
+  
+  const wordCloud = document.getElementById("word-cloud");
+  
+  function getRandomPosition() {
+    const x = Math.random() * 80; // Posição horizontal aleatória
+    const y = Math.random() * 80; // Posição vertical aleatória
+    return { x, y };
+  }
+  
+  function isMobile() {
+    // Verifica se o dispositivo é móvel com base na largura da tela
+    return window.innerWidth <= 768;
+  }
+  
+  function getRandomFontSize() {
+    // Define intervalos de tamanho de fonte diferentes para desktop e mobile
+    const minSize = isMobile() ? 12 : 16; // Mínimo de 12px no mobile, 16px no desktop
+    const maxSize = isMobile() ? 24 : 48; // Máximo de 24px no mobile, 48px no desktop
+    return Math.floor(Math.random() * (maxSize - minSize + 1)) + minSize;
+  }
+  
+  function createWordCloud() {
+    words.forEach((word, index) => {
+      const wordElement = document.createElement("span");
+      wordElement.classList.add("word");
+      wordElement.textContent = word;
+  
+      // Posicionamento aleatório
+      const { x, y } = getRandomPosition();
+      wordElement.style.left = `${x}%`;
+      wordElement.style.top = `${y}%`;
+  
+      // Tamanho da fonte aleatório (ajustado para mobile ou desktop)
+      const fontSize = getRandomFontSize();
+      wordElement.style.fontSize = `${fontSize}px`;
+  
+      // Atraso na animação para criar um efeito sequencial
+      wordElement.style.animationDelay = `${index * 0.5}s`;
+  
+      wordCloud.appendChild(wordElement);
+    });
+  }
+  
+  createWordCloud();
+  
+  // Atualiza o layout ao redimensionar a tela
+  window.addEventListener("resize", () => {
+    // Limpa a nuvem de palavras atual
+    wordCloud.innerHTML = "";
+    // Recria a nuvem de palavras com os novos tamanhos de fonte
+    createWordCloud();
+  });
