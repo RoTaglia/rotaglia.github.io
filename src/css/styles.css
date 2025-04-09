@@ -624,7 +624,7 @@ canvas {
 
 #mss {
     position: relative;
-    background: radial-gradient(circle at bottom left, rgba(29, 29, 29, 0.822), rgb(26, 26, 53),rgb(37, 14, 1));
+    background: radial-gradient(circle at bottom left, rgb(29 29 29), rgb(26 26 53), rgb(37 14 1));
     height: auto;
     display: flex;
     flex-direction: column;
