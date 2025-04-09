@@ -610,6 +610,7 @@ canvas {
     padding: 20px;
     text-align: center;
     color: white;
+    z-index: 2;
 }
 #contact h2 {
     font-size: 2.5rem;
@@ -620,11 +621,202 @@ canvas {
     margin-bottom: 20px;
     opacity: 0.8;
 }
+
+#mss {
+    position: relative;
+    background: radial-gradient(circle at bottom left, rgba(29, 29, 29, 0.822), rgb(26, 26, 53),rgb(37, 14, 1));
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    color: white;
+    z-index: 1;
+    padding: 50px 0;
+}
+
+#mss h1{
+    font-size: 2.2em;
+    text-align: center;
+}
+img.mss-logo {
+    max-width: 60%;
+    transition: transform 0.3s ease;
+}
+img.mss-logo:hover {
+    transform: scale(1.2);
+}
+
+#mss-content {
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+iframe{
+    margin: 20px;
+}
+
+.vinyl-container {
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+}
+
+.vinyl {
+position: absolute;
+border-radius: 50%;
+display: flex;
+justify-content: center;
+align-items: center;
+box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+animation: spin 5s linear infinite;
+
+background: 
+/* Trilhas finas - versão corrigida */
+repeating-radial-gradient(
+    circle,
+    #000,
+    #000 2px,
+    rgba(0, 0, 0, 0.2) 2px,
+    rgba(255, 255, 255, 0.103) 3px,
+    #000 3px,
+    #000 5px
+),
+radial-gradient(
+    circle, 
+    #222 0%, 
+    #111 30%, 
+    #000 70%, 
+    #111 100%
+);
+}
+
+.vinyl::before {
+    content: '';
+    position: absolute;
+    width: 15%;
+    height: 15%;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+    z-index: 2;
+}
+
+.vinyl::after {
+    content: '';
+    position: absolute;
+    width: 5%;
+    height: 5%;
+    border-radius: 50%;
+    background: #000;
+    z-index: 3;
+}
+
+.label {
+    width: 30%;
+    height: 30%;
+    border-radius: 50%;
+    background: linear-gradient(45deg, #C60F45,#C60F45,#EDCC9F,#E37C05, #E37C05);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    font-size: 0.8vw;
+    text-align: center;
+}
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Posicionamento e tamanho dos vinis */
+.vinyl:nth-child(1) {
+    width: 200px;
+    height: 200px;
+    top: 10%;
+    left: 18%;
+    animation-duration: 8s;
+}
+
+.vinyl:nth-child(2) {
+    width: 250px;
+    height: 250px;
+    top: 50%;
+    left: 23%;
+    animation-duration: 10s;
+}
+
+.vinyl:nth-child(3) {
+    width: 180px;
+    height: 180px;
+    top: 70%;
+    left: 70%;
+    animation-duration: 7s;
+}
+
+.vinyl:nth-child(4) {
+    width: 300px;
+    height: 300px;
+    top: 20%;
+    left: 68%;
+    animation-duration: 12s;
+}
+
+.vinyl:nth-child(5) {
+    width: 220px;
+    height: 220px;
+    top: 60%;
+    left: 50%;
+    animation-duration: 9s;
+}
+
+.vinyl:nth-child(6) {
+    width: 420px;
+    height: 420px;
+    top: -5%;
+    left: -5%;
+    animation-duration: 9s;
+}
+
+.vinyl:nth-child(7) {
+    width: 220px;
+    height: 220px;
+    top: 35%;
+    left: 10%;
+    animation-duration: 9s;
+}
+.vinyl:nth-child(8) {
+    width: 380px;
+    height: 380px;
+    top: 63%;
+    left:5%;
+    animation-duration: 9s;
+}
+.vinyl:nth-child(9) {
+    width: 280px;
+    height: 280px;
+    top: 63%;
+    left:85%;
+    animation-duration: 9s;
+}
+.vinyl:nth-child(10) {
+    width: 480px;
+    height: 480px;
+    top: -1%;
+    left:85%;
+    animation-duration: 9s;
+}
+
 #final {
     position: relative;
     height: 100vh;
     background: black;
     overflow: hidden;
+    z-index: 2;
 }
 #final {
     position: relative;
@@ -884,5 +1076,14 @@ footer a:hover::after {
         width: 80%;
         height: 250px;
         top: 40%;
+    }
+    img.mss-logo {
+        max-width: 90%;
+    }
+    #mss h1 {
+        font-size: 1.8em;
+    }
+    .vinyl-container {
+        display: none;
     }
 }
