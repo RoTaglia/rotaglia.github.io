@@ -26,7 +26,6 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener("DOMContentLoaded", function () {
     const texts = [
         'analista e desenvolvedor de sistemas', 
-        'aficionado por tecnologia', 
         'conhecimento em HTML5, CSS3,',
         'JavaScript, PHP, MySQL...',
     ];
